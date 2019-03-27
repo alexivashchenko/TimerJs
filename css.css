@@ -9,9 +9,11 @@
 .timer > span{
     display: table-cell;
     padding: 10px 10px;
-
 }
 
+.timer > span > span:nth-child(1){
+    margin-right: 5px;
+}
 
 
 

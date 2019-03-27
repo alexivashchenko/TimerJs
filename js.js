@@ -2,34 +2,7 @@
 
 
 
-
-
-function _Timer( deadline ){
-
-    var deadline = new Date("Jan 5, 2018 15:37:25").getTime();
-
-    var x = setInterval(function() {
-
-        var now = new Date().getTime();
-        var t = deadline - now;
-        var days = Math.floor(t / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
-        var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((t % (1000 * 60)) / 1000);
-        document.getElementById("demo").innerHTML = days + "d "
-        + hours + "h " + minutes + "m " + seconds + "s ";
-            if (t < 0) {
-                clearInterval(x);
-                document.getElementById("demo").innerHTML = "EXPIRED";
-            }
-
-    }, 1000);
-
-
-}
-
-
-class Timer {
+class TimerJs {
 
 
     time = {
@@ -39,32 +12,52 @@ class Timer {
         seconds : 0,
     };
 
+    timerElements = {
+        days : 'Days',
+        hours : 'Hours',
+        minutes : 'Minutes',
+        seconds : 'Seconds',
+    };
+
+    timerSubElementTemplate = '<span><span class="{{KEY}}"></span><span>{{VALUE}}</span></span>';
+
+    log = false;
+
     constructor( selector, deadline ) {
 
       this.selector = selector;
       this.deadline = new Date(deadline).getTime();
-      console.log('this.deadline', this.deadline);
 
     }
 
-    start(){
+    getTimerInnerHtml(){
 
-        let log = {};
-        log.foo = 'start';
-
-        let deadline = this.deadline;
-        let selector = this.selector;
-        let time = this.time;
-
+        let t = this;
 
         let timerInnerHtml = '';
-        Object.keys(time).forEach(function(key){
-            timerInnerHtml+= '<span class="'+key+'"></span>';
+
+        Object.keys(t.timerElements).forEach(function(key){
+
+            timerInnerHtml+= t.timerSubElementTemplate.replace('{{KEY}}', key).replace('{{VALUE}}', t.timerElements[key]);
+
         });
+
+        return timerInnerHtml;
+    }
+
+
+    init(){
+
+        let t = this;
+
+        let log = { foo :'init' };
+
+
+        let timerInnerHtml = this.getTimerInnerHtml();
 
         log.timerInnerHtml = timerInnerHtml;
 
-        let timerHtml = document.querySelectorAll(selector);
+        let timerHtml = document.querySelectorAll(t.selector);
         log.timerHtml = timerHtml;
 
         timerHtml.forEach(function(element){
@@ -79,25 +72,27 @@ class Timer {
 
             let now = new Date().getTime();
 
-            log.deadline = deadline;
+            log.deadline = t.deadline;
             log.now = now;
 
-            let t = deadline - now;
+            let time = t.deadline - now;
 
-            log.t = t;
-
-
-            time = {
-                days : Math.floor(t / (1000 * 60 * 60 * 24)),
-                hours : Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60)),
-                minutes : Math.floor((t % (1000 * 60 * 60)) / (1000 * 60)),
-                seconds : Math.floor((t % (1000 * 60)) / 1000),
-            };
             log.time = time;
-            console.log('time', time);
 
-            Object.keys(time).forEach(function(key){
-                document.querySelector(selector + ' .' + key).innerHTML = time[key];
+
+            t.time = {
+                days : Math.floor(time / (1000 * 60 * 60 * 24)),
+                hours : Math.floor((time%(1000 * 60 * 60 * 24))/(1000 * 60 * 60)),
+                minutes : Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)),
+                seconds : Math.floor((time % (1000 * 60)) / 1000),
+            };
+            log.time = t.time;
+
+            if( t.log === true ){ console.log(t.time); }
+
+
+            Object.keys(t.time).forEach(function(key){
+                document.querySelector(t.selector + ' .' + key).innerHTML = t.time[key];
             });
 
 
@@ -113,7 +108,7 @@ class Timer {
 
         }, 1000);
 
-        console.log(log);
+        if( t.log === true ){ console.log(log) }
 
     }
 
@@ -122,14 +117,7 @@ class Timer {
 }
 
 
-window.addEventListener('load', function(){
 
-
-    let timer1 = new Timer('#timer1', '2019-03-30 14:52:33');
-
-    timer1.start();
-
-}, false);
 
 
 
