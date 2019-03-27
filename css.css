@@ -1,0 +1,19 @@
+
+
+
+
+.timer{
+    display: table;
+}
+
+.timer > span{
+    display: table-cell;
+    padding: 10px 10px;
+
+}
+
+
+
+
+
+
