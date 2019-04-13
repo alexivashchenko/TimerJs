@@ -11,18 +11,18 @@
     window.addEventListener('load', function(){
 
 
-        let timer1 = new TimerJs('#timer1', '2019-03-30 14:52:33');
+        let timer1 = new TimerJs('#timer1', '2019-08-30 14:52:33');
 
         timer1.timerElements = {
-            days : 'Дней',
+            days : 'Days',
             hours : 'Hours',
-            minutes : 'Минут',
+            minutes : 'Minutes',
             seconds : 'Seconds',
         };
 
         timer1.timerSubElementTemplate = '<span><span class="{{KEY}}"></span><br><span>{{VALUE}}</span></span>';
 
-        timer1.log = true;
+        //timer1.log = true;
 
         timer1.init();
 

@@ -1,7 +1,6 @@
 
 
 
-
 class TimerJs {
 
 
@@ -92,7 +91,10 @@ class TimerJs {
 
 
             Object.keys(t.time).forEach(function(key){
-                document.querySelector(t.selector + ' .' + key).innerHTML = t.time[key];
+                var element = document.querySelector(t.selector + ' .' + key);
+                if( typeof(element) != 'undefined' && element != null ){
+                    element.innerHTML = t.time[key];
+                }
             });
 
 
